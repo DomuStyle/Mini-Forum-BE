@@ -24,3 +24,12 @@ class PostListCreateView(generics.ListCreateAPIView):
 
         # sets the authenticated user as the author of the post.
         serializer.save(author=self.request.user)
+
+
+class CommentListCreateView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+      serializer.save(author=self.request.user)
