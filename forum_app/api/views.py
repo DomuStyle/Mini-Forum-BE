@@ -33,3 +33,16 @@ class CommentListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
       serializer.save(author=self.request.user)
+
+
+# defines a view for retrieving, updating, and deleting a single post.
+class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+    # retrieves all Post objects from the database.
+    queryset = Post.objects.all()
+
+    # specifies the serializer to format Post objects.
+    serializer_class = PostSerializer
+
+    # applies the custom permission class to control access.
+    permission_classes = [IsOwnerOrReadOnly]
