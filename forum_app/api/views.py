@@ -1,0 +1,26 @@
+from forum_app.models import Post, Comment
+from .permissions import IsOwnerOrReadOnly
+from .serializers import PostSerializer, CommentSerializer
+
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+
+
+
+# defines a view for listing and creating posts.
+class PostListCreateView(generics.ListCreateAPIView):
+
+    # retrieves all Post objects from the database.
+    queryset = Post.objects.all()
+
+    # specifies the serializer to format Post objects.
+    serializer_class = PostSerializer
+
+    # applies the custom permission class.
+    permission_classes = [IsOwnerOrReadOnly]
+
+    # customizes the creation of new Post objects.
+    def perform_create(self, serializer):
+
+        # sets the authenticated user as the author of the post.
+        serializer.save(author=self.request.user)
