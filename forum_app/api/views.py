@@ -46,3 +46,9 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     # applies the custom permission class to control access.
     permission_classes = [IsOwnerOrReadOnly]
+
+
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsOwnerOrReadOnly]
